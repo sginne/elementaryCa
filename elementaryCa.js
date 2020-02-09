@@ -1,5 +1,5 @@
 // columns and rows for grid
-const columns = 10;
+const columns = 10; //cant be less than 7. yes, I am lazy here (see preConfig function)
 const rows = 8;
 
 //code
@@ -43,6 +43,17 @@ function randomConfig() {
   }
   gridOptions.api.setRowData([configurationData]);
 
+}
+
+function clearConfig() {
+  //window.alert(configurationData);
+  //gridOptions.api.setRowData([]);
+  configurationData = [];
+
+  for (let i = 0; i < columns; i++) {
+    configurationData[i.toString()] = "0";
+  }
+  gridOptions.api.setRowData([configurationData]);
 }
 
 function preConfig() {
