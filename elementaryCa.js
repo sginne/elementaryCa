@@ -1,5 +1,5 @@
 // columns and rows for grid
-const columns = 9;
+const columns = 10;
 const rows = 8;
 
 //code
@@ -8,7 +8,7 @@ var rowData = [];
 var configurationData = [];
 for (let i = 0; i < columns; i++) {
   columnCA.push({
-    headerName: i.toString(),
+    headerName: 'c' + i.toString(),
     field: i.toString(),
     width: 40
   });
@@ -28,7 +28,12 @@ var gridOptions = {
     var colindex = event.column.getId();
     var rowindex = event.rowIndex;
     if (rowindex == 0) {
-      window.alert(gridApi);
+      row = this.api.getDisplayedRowAtIndex(rowindex);
+      if (this.api.getValue(colindex.toString(), row) == '0') {
+        row.setDataValue(colindex.toString(), '1');
+      } else {
+        row.setDataValue(colindex.toString(), '0');
+      }
     };
   }
 };
