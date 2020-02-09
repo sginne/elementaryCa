@@ -19,11 +19,9 @@ rowData = [configurationData];
 
 // let the grid know which columns and what data to use
 var gridOptions = {
-  onGridReady(params) {
-    this.gridApi = params.api
-  },
   columnDefs: columnCA,
   rowData: rowData,
+  //onClick event for cell - 1/0 change
   onCellClicked: function(event) {
     var colindex = event.column.getId();
     var rowindex = event.rowIndex;
@@ -37,6 +35,30 @@ var gridOptions = {
     };
   }
 };
+
+function randomConfig() {
+  configurationData = [];
+  for (let i = 0; i < columns; i++) {
+    configurationData[i.toString()] = Math.round(Math.random()).toString();
+  }
+  gridOptions.api.setRowData([configurationData]);
+
+}
+
+function preConfig() {
+  //window.alert(configurationData);
+  //gridOptions.api.setRowData([]);
+  configurationData = [];
+
+  for (let i = 0; i < columns; i++) {
+    configurationData[i.toString()] = "0";
+  }
+  configurationData["1"] = "1";
+  configurationData["4"] = "1";
+  configurationData["5"] = "1";
+  configurationData["7"] = "1";
+  gridOptions.api.setRowData([configurationData]);
+}
 
 // setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function() {
