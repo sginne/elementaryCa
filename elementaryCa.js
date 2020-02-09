@@ -6,6 +6,11 @@ const rows = 8;
 var columnCA = [];
 var rowData = [];
 var configurationData = [];
+var wolframDictionary = {
+  "000": 0,
+  "001": 0,
+  "010": 0
+};
 for (let i = 0; i < columns; i++) {
   columnCA.push({
     headerName: 'c' + i.toString(),
@@ -71,8 +76,62 @@ function preConfig() {
   gridOptions.api.setRowData([configurationData]);
 }
 
+function validateRule(evt) {
+  var theEvent = evt || window.event;
+
+  // Handle paste
+  if (theEvent.type === 'paste') {
+    key = event.clipboardData.getData('text/plain');
+  } else {
+    // Handle key press
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+  }
+  var regex = /[0-9]/;
+  if (!regex.test(key)) {
+    theEvent.returnValue = false;
+    if (theEvent.preventDefault) theEvent.preventDefault();
+  }
+  parseWolfram();
+}
+
+function binary(argument) {
+  result = '';
+  sum = argument;
+  while (sum > 0) {
+    result = (sum % 2) + result;
+    sum = Math.floor(sum / 2);
+  }
+  return result;
+}
+
+function parseWolfram() {
+  //window.alert(binary(3));
+  var wolframRule = document.getElementById("wolframRule");
+  var wolframDisplay = document.getElementById("wolframDisplay");
+  if (!isNaN(wolframRule.value)) {
+    wolframRule.value = wolframRule.value % 256;
+  } else {
+    wolframRule.value = 30;
+  }
+  //sum = wolframRule.value;
+  //window.alert(binary(3));
+  binaryRule = binary(wolframRule.value);
+  binaryRule = binaryRule.padStart(8, "0");
+  wolframDisplay.value = wolframRule.value + ":\n" + binaryRule + "\n\n";
+  for (let i = 7; i > -1; i--) {
+    triplet = binary(7 - i).toString();
+    triplet = triplet.padStart(3, "0");
+    wolframDisplay.value += triplet + ":->" + binaryRule[i] + "\n";
+    wolframDictionary[triplet] = binaryRule[i];
+  }
+  //window.alert(wolframDictionary["110"]);
+
+}
+
 // setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function() {
   var gridDiv = document.querySelector('#caGrid');
   new agGrid.Grid(gridDiv, gridOptions);
+  parseWolfram();
 });

@@ -6,7 +6,7 @@
 <body>
   <div style="position: relative;">
     <div id="caGrid" style="height: 500px; width:402px;" class="ag-theme-balham"></div>
-    <div style="position: relative; left:410px; top:-400px; ">
+    <div style="position: relative; left:410px; top:-500px; ">
       <button onclick="preConfig();">
         Load 1001101 configuration
       </button>
@@ -18,6 +18,11 @@
       <button onclick="clearConfig();">
         Clear configuration to 0s
       </button>
+      <br><br>
+      Wolfram rule(0-255):<br>
+      <input id="wolframRule" value="30"  onkeypress='validateRule(event); parseWolfram();' /><br>
+      <button onclick="parseWolfram();">parseWolfram</button><br>
+      <textarea disabled rows="12" id="wolframDisplay">empty</div>
     </div>
   </div>
 </body>
