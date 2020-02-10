@@ -129,6 +129,22 @@ function parseWolfram() {
 
 }
 
+function resetCA() {
+  firstRow = gridOptions.api.getDisplayedRowAtIndex(0);
+  gridOptions.api.setRowData([firstRow.data]);
+  //window.alert('res');
+}
+
+function runCA() {
+  firstRow = gridOptions.api.getDisplayedRowAtIndex(0);
+  lastRowIndex = gridOptions.api.getLastDisplayedRow();
+  lastRow = gridOptions.api.getDisplayedRowAtIndex(lastRowIndex);
+  gridOptions.api.updateRowData({
+    add: [lastRow.data]
+  });
+
+}
+
 // setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function() {
   var gridDiv = document.querySelector('#caGrid');
