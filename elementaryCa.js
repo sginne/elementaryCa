@@ -1,6 +1,7 @@
 // columns and rows for grid
 const columns = 10; //cant be less than 7. yes, I am lazy here (see preConfig function)
 const rows = 8;
+const stepsToRun = 16;
 
 //code
 var columnCA = [];
@@ -76,6 +77,12 @@ function preConfig() {
   gridOptions.api.setRowData([configurationData]);
 }
 
+function sleep(miliseconds) {
+  var currentTime = new Date().getTime();
+
+  while (currentTime + miliseconds >= new Date().getTime()) {}
+}
+
 function validateRule(evt) {
   var theEvent = evt || window.event;
 
@@ -136,13 +143,19 @@ function resetCA() {
 }
 
 function runCA() {
-  firstRow = gridOptions.api.getDisplayedRowAtIndex(0);
-  lastRowIndex = gridOptions.api.getLastDisplayedRow();
-  lastRow = gridOptions.api.getDisplayedRowAtIndex(lastRowIndex);
-  gridOptions.api.updateRowData({
-    add: [lastRow.data]
-  });
-
+  while (gridOptions.api.getDisplayedRowCount() < stepsToRun) {
+    lastRowIndex = gridOptions.api.getLastDisplayedRow();
+    lastRow = gridOptions.api.getDisplayedRowAtIndex(lastRowIndex);
+    lastRowData = Object.create(lastRow.data);
+    var newRowData = [];
+    for (let i = 0; i < columns; i++) {
+      askingTriplet = ((lastRowData[i - 1] === undefined) ? "0" : lastRowData[i - 1]).concat(lastRowData[i], ((lastRowData[i + 1] === undefined) ? "0" : lastRowData[i + 1]));
+      newRowData.push(wolframDictionary[askingTriplet]);
+    }
+    gridOptions.api.updateRowData({
+      add: [newRowData]
+    });
+  }
 }
 
 // setup the grid after the page has finished loading
