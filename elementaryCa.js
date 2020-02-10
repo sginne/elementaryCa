@@ -29,6 +29,7 @@ var gridOptions = {
   rowData: rowData,
   //onClick event for cell - 1/0 change
   onCellClicked: function(event) {
+    resetCA();
     var colindex = event.column.getId();
     var rowindex = event.rowIndex;
     if (rowindex == 0) {
@@ -143,6 +144,7 @@ function resetCA() {
 }
 
 function runCA() {
+  resetCA();
   while (gridOptions.api.getDisplayedRowCount() < stepsToRun) {
     lastRowIndex = gridOptions.api.getLastDisplayedRow();
     lastRow = gridOptions.api.getDisplayedRowAtIndex(lastRowIndex);
